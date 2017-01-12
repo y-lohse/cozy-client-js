@@ -126,7 +126,7 @@ cozy.init({
   disablePromises: false,
   oauth: {
     client: {/*...*/},
-    scopes: ["files:read"],
+    permissions: {},
     onRegistered: (client, url) => { /* */ },
     credentialsStorage: new cozy.auth.LocalStorage(window.localStorage)
   }
@@ -491,16 +491,16 @@ const client = await cozy.auth.getClient(new cozy.auth.Client('https://me.cozy.i
 ```
 
 
-### `cozy.auth.getAuthCodeURL(client, scopes)`
+### `cozy.auth.getAuthCodeURL(client, permissions)`
 
 **This method is for internal or advanced usages. Please see [OAuth document](./oauth.md) to see how to use OAuth with this library**
 
-`cozy.auth.getAuthCodeURL` is used to generate the URL on which the user should go to give access to the application with the specified scopes.
+`cozy.auth.getAuthCodeURL` is used to generate the URL on which the user should go to give access to the application with the specified permissions.
 
 It returns an object with the url and a generated random state that should be stored to be matched again for the token exchange phase.
 
 - `client` is a registered `cozy.auth.Client`
-- `scopes` is an array of permission strings formatted as `key:access` (like `files/images:read`)
+- `permissions` is an object of permissions. See the [permissions document](https://github.com/cozy/cozy-stack/blob/master/docs/permissions.md) for more details.
 
 ```js
 const {url, state} = cozy.auth.getAuthCodeURL(client, ['files/images:read'])

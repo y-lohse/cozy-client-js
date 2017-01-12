@@ -126,12 +126,18 @@ export function getClient (cozy, client) {
 // getAuthCodeURL returns a pair {authURL,state} given a registered client. The
 // state should be stored in order to be checked against on the user validation
 // phase.
-export function getAuthCodeURL (cozy, client, scopes = []) {
+export function getAuthCodeURL (cozy, client, permissions = {}) {
   if (!(client instanceof Client)) {
     client = new Client(client)
   }
   if (!client.isRegistered()) {
     throw new Error('Client not registered')
+  }
+  const scopes = []
+  for (const permName in permissions) {
+    if (permissions.hasOwnProperty(permName)) {
+      const {type, verbs, selector, values} = permissions[permName]
+    }
   }
   const state = generateRandomState()
   const query = {
@@ -193,11 +199,13 @@ export function oauthFlow (cozy, storage, clientParams, onRegistered) {
       oauthFlow(cozy, storage, clientParams, onRegistered))
   }
 
+  const { permissions } = clientParams
+
   function registerNewClient () {
     return storage.clear()
       .then(() => registerClient(cozy, clientParams))
       .then((client) => {
-        const {url, state} = getAuthCodeURL(cozy, client, clientParams.scopes)
+        const {url, state} = getAuthCodeURL(cozy, client, permissions)
         return storage.save(StateKey, {client, url, state})
       })
   }

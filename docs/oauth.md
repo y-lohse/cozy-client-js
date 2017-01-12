@@ -40,7 +40,7 @@ In order to handle the registration of the client, two callbacks should be provi
     + `clientURI`: string (optional)
     + `logoURI`: string (optional)
     + `policyURI`: string (optional)
-    + `scopes`: array of `key:value` elements representing the permission scopes required by the application that the user should accept (mandatory)
+    + `permissions`: object, permissions required by the application that the user should accept (mandatory). See the [permissions document](https://github.com/cozy/cozy-stack/blob/master/docs/permissions.md) for more details.
   - `onRegistered(client, url)` which should provide the wanted "side effect" after the client registration and return a promise containing the request URL provided by the user containing the access code and state.
 
 The `onRegistered` callback is called with the registered client and the URL on which the user should go to give access to the application.
@@ -81,7 +81,19 @@ const cozy = new Cozy({
       redirectURI: 'http://localhost:3333/do_access',
       softwareID: 'foobar',
       clientName: 'client',
-      scopes: ['files/images:read']
+      permissions: {
+        contacts: {
+          description: "Required for autocompletion on @name",
+          type: "io.cozy.contacts",
+          verbs: "GET"
+        },
+        images: {
+          description: "Required for the background",
+          type: "io.cozy.files",
+          verbs: "GET",
+          values: ["io.cozy.files.music-dir"]
+        },
+      }
     },
     onRegistered: onRegistered,
   }

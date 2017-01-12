@@ -131,7 +131,7 @@ describe('Authentication', function () {
         policy_uri: '123'
       })
 
-      const {url, state} = cozy.auth.getAuthCodeURL(client, ['a', 'b'])
+      const {url, state} = cozy.auth.getAuthCodeURL(client, {})
       state.should.be.type('string')
       state.length.should.not.equal(0)
       url.indexOf('http://foobar/auth/authorize?').should.equal(0)
@@ -163,7 +163,7 @@ describe('Authentication', function () {
         policy_uri: '123'
       })
 
-      const {url, state} = cozy.auth.getAuthCodeURL(client, ['a', 'b'])
+      const {url, state} = cozy.auth.getAuthCodeURL(client, {})
 
       const token = await cozy.auth.getAccessToken(client, state, url)
       token.should.eql(new cozy.auth.AccessToken({
@@ -305,7 +305,7 @@ describe('Authentication', function () {
           redirectURI: 'http://babelu/',
           softwareID: 'id',
           clientName: 'client',
-          scopes: ['a', 'b']
+          scopes: {}
         },
         async function (client, url) {
           client.clientID.should.equal('123')
@@ -358,7 +358,7 @@ describe('Authentication', function () {
             redirectURI: 'http://coucou/',
             softwareID: 'id',
             clientName: 'client',
-            scopes: ['a', 'b']
+            scopes: {}
           },
           async function () {
             const data = await storage.load('state')
@@ -407,7 +407,7 @@ describe('Authentication', function () {
             redirectURI: 'http://coucou/',
             softwareID: 'id',
             clientName: 'client',
-            scopes: ['a', 'b']
+            scopes: {}
           },
           async function () {
             const data = await storage.load('state')

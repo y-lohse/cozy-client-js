@@ -7,6 +7,7 @@ import * as crud from './crud'
 import * as mango from './mango'
 import * as files from './files'
 import * as offline from './offline'
+import * as settings from './settings'
 
 const {AccessToken: AccessTokenV3, Client: ClientV3} = auth
 
@@ -69,10 +70,15 @@ const offlineProto = {
   replicateFromCozy: offline.replicateFromCozy
 }
 
+const settingsProto = {
+  diskUsage: settings.diskUsage
+}
+
 class Cozy {
   constructor (options) {
     this.files = {}
     this.offline = {}
+    this.settings = {}
     this.auth = {
       Client: ClientV3,
       AccessToken: AccessTokenV3,
@@ -119,6 +125,7 @@ class Cozy {
     addToProto(this, this.auth, authProto, disablePromises)
     addToProto(this, this.files, filesProto, disablePromises)
     addToProto(this, this.offline, offlineProto, disablePromises)
+    addToProto(this, this.settings, settingsProto, disablePromises)
 
     if (options.offline) {
       this.offline.init(options.offline)

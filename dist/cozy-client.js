@@ -574,6 +574,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var offline = _interopRequireWildcard(_offline);
 	
+	var _settings = __webpack_require__(16);
+	
+	var settings = _interopRequireWildcard(_settings);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -641,12 +645,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  replicateFromCozy: offline.replicateFromCozy
 	};
 	
+	var settingsProto = {
+	  diskUsage: settings.diskUsage
+	};
+	
 	var Cozy = function () {
 	  function Cozy(options) {
 	    _classCallCheck(this, Cozy);
 	
 	    this.files = {};
 	    this.offline = {};
+	    this.settings = {};
 	    this.auth = {
 	      Client: ClientV3,
 	      AccessToken: AccessTokenV3,
@@ -697,6 +706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      addToProto(this, this.auth, authProto, disablePromises);
 	      addToProto(this, this.files, filesProto, disablePromises);
 	      addToProto(this, this.offline, offlineProto, disablePromises);
+	      addToProto(this, this.settings, settingsProto, disablePromises);
 	
 	      if (options.offline) {
 	        this.offline.init(options.offline);
@@ -2572,6 +2582,23 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_15__;
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.diskUsage = diskUsage;
+	
+	var _fetch = __webpack_require__(8);
+	
+	function diskUsage(cozy) {
+	  return (0, _fetch.cozyFetchJSON)(cozy, 'GET', '/settings/disk-usage');
+	}
 
 /***/ }
 /******/ ])
